@@ -25,7 +25,7 @@ export function getMenuDel(data) {
     return http.post('/menudelete', data)
 }
 
-        /* ---角色接口---- */
+/* ---角色接口---- */
 //添加角色
 export function getRoleAdd(data) {
     return http.post('/roleadd', data)
@@ -48,13 +48,13 @@ export function getRoleDel(data) {
 }
 
 
-        /* ---管理员接口---- */
+/* ---管理员接口---- */
 //添加管理员
 export function getUserAdd(data) {
     return http.post('/useradd', data)
 }
 //管理员总数
-export function getUserCount(){
+export function getUserCount() {
     return http.get('/usercount')
 }
 //管理员列表接口
@@ -74,13 +74,13 @@ export function getUserDel(data) {
     return http.post('/userdelete', data)
 }
 //管理员登录
-export function getLogin(data){
-    return http.post('/userlogin',data)
+export function getLogin(data) {
+    return http.post('/userlogin', data)
 }
 
 
- 
-        /* ---商品分类接口---- */
+
+/* ---商品分类接口---- */
 //添加商品分类
 export function getCateAdd(data) {
     return http.post('/cateadd', data)
@@ -103,3 +103,121 @@ export function getCateDel(data) {
 }
 
 
+
+/* ----商品规格接口---- */
+//添加商品规格
+export function getSpecsAdd(data) {
+    return http.post('/specsadd', data)
+}
+//商品规格总数
+export function getSpecsCount() {
+    return http.get('/specscount')
+}
+//商品规格列表接口
+export function getSpecsList(params) {
+    return http.get('/specslist', { params })
+}
+//商品规格获取一条
+export function getSpecsInfo(params) {
+    return http.get('/specsinfo', { params })
+}
+//编辑商品规格
+export function getSpecsEdit(data) {
+    return http.post('/specsedit', data)
+}
+//删除商品规格
+export function getSpecsDel(data) {
+    return http.post('/specsdelete', data)
+}
+
+
+/* ----商品管理接口---- */
+//添加商品
+export function getGoodsAdd(data) {
+    return http.post('/goodsadd', data)
+}
+//商品总数
+export function getGoodsCount() {
+    return http.get('/goodscount')
+}
+//商品列表接口
+export function getGoodsList(params) {
+    return http.get('/goodslist', { params })
+}
+//商品获取一条
+export function getGoodsInfo(params) {
+    return http.get('/goodsinfo', { params })
+}
+//编辑商品
+export function getGoodsEdit(data) {
+    return http.post('/goodsedit', data)
+}
+//删除商品
+export function getGoodsDel(data) {
+    return http.post('/goodsdelete', data)
+}
+
+/* ----会员接口----- */
+//会员列表接口
+export function getMemberList() {
+    return http.get('/memberlist')
+}
+//会员获取（一条）
+export function getMemberInfo(params) {
+    return http.get('/memberinfo', {
+        params
+    })
+}
+//会员编辑事件
+export function getMemberEdit(data) {
+    return http.post('/memberedit', data)
+}
+
+
+/* ----轮播图接口----- */
+//添加轮播图
+export function getBannerAdd(data) {
+    return http.post('/banneradd', data)
+}
+//轮播图列表接口
+export function getBannerList() {
+    return http.get('/bannerlist')
+}
+//轮播图获取（一条）
+export function getBannerInfo(params) {
+    return http.get('/bannerinfo', {
+        params
+    })
+}
+//轮播图编辑事件
+export function getBannerEdit(data) {
+    return http.post('/banneredit', data)
+}
+//轮播图删除事件
+export function getBannerDel(data) {
+    return http.post('/bannerdelete', data)
+}
+
+/* ----限时秒杀接口----- */
+//添加限时秒杀
+export function getSeckAdd(data){
+    return http.post('/seckadd',data)
+}
+//限时秒杀列表接口
+export function getSeckList(){
+    return http.get('/secklist')
+}
+//限时秒杀获取（一条）
+export function getSeckInfo(params){
+    return http.get('/seckinfo',{
+        params
+    })
+}
+//限时秒杀编辑事件
+export function getSeckEdit(data){
+    return http.post('/seckedit',data)
+}
+//限时秒杀删除事件
+export function getSeckDel(data){
+    return http.post('/seckdelete',data)
+}

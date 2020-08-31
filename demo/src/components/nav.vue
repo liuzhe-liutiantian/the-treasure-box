@@ -14,7 +14,7 @@
             <i class="el-icon-s-grid"></i>
             <span slot="title">首页</span>
           </el-menu-item>
-          <el-submenu :index="item.id.toString()" v-for="item in get_MenuList" :key="item.id">
+          <el-submenu :index="item.id.toString()" v-for="item in navList" :key="item.id">
             <template slot="title">
               <i :class="item.icon"></i>
               <span>{{item.title}}</span>
@@ -38,7 +38,7 @@ export default {
   data() {
     return {
       defaultActive: "/home",
-      // navList: [],
+      navList: [],
     };
   },
   computed: {
@@ -46,7 +46,7 @@ export default {
   },
   mounted() {
     this.defaultActive = this.$route.path;
-    //因为菜单和权限挂钩还有管理员挂钩。管理员的某一个用户在登录的时候，根据权限获取不同彩电
+    //因为菜单和权限挂钩还有管理员挂钩。管理员的某一个用户在登录的时候，根据权限不同获取不同
     this.navList = sessionStorage.getItem("userInfo")
       ? JSON.parse(sessionStorage.getItem("userInfo")).menus
       : [];

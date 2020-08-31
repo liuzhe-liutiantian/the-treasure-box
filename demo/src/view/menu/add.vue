@@ -119,6 +119,8 @@ export default {
       this.dialogShow = false;
       //子组件关闭弹框要去修改父组件dialogShow
       this.$emit("closeDialog", false);
+      //移除表单验证信息
+      this.$refs["ruleForm"].clearValidate(this.rules);
     },
     //添加表单事件
     add(formName) {

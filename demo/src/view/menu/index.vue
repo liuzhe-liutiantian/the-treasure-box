@@ -9,13 +9,13 @@
     <!-- 表单 -->
     <v-list @edit='edit' ></v-list>
     <!-- 弹出对话框 -->
-    <v-dialog ref='vDialog' :isShow='sonStatus' @closeDialog="closeDialog"></v-dialog>
+    <v-add ref='vDialog' :isShow='sonStatus' @closeDialog="closeDialog"></v-add>
   </div>
 </template>
 
 <script>
 import vList from "./list";
-import vDialog from './add'
+import vAdd from './add'
 import { mapGetters, mapActions } from "vuex";
 
 import vBread from "../../components/bread";
@@ -74,7 +74,7 @@ export default {
   components: {
     vBread,
     vList,
-    vDialog
+    vAdd
   },
 };
 </script>

@@ -90,6 +90,9 @@ export default {
       this.$refs.tree.setCheckedKeys([]);
       //子组件去修改父组件的弹框状态
       this.$emit("closeDialog", false);
+      
+      //移除表单验证信息
+      this.$refs["ruleForm"].clearValidate(this.rules);
     },
     //触发菜单列表的调取
     ...mapActions(["getMenuListAction", "getRoleListAction"]),

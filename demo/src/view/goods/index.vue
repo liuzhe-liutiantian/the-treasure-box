@@ -5,7 +5,7 @@
       <el-button @click="openDialog" type="primary" size="mini" plain>添加</el-button>
     </div>
     <!-- table 表格渲染 -->
-    <v-list @update='update'></v-list>
+    <v-list ref='elGoods' @update='update'></v-list>
     <!-- 弹框的渲染 -->
     <v-add ref='vAdd' :isShow="sonStatus" @closeDialog="closeDialog"></v-add>
   </div>
@@ -34,6 +34,7 @@ export default {
     openDialog() {
       this.sonStatus.isAdd = true;
       this.sonStatus.dialogShow = true;
+      this.sonStatus.getCount = this.$refs.elGoods.getCount
     },
     //关闭弹框
     //关闭弹框事件
@@ -44,7 +45,7 @@ export default {
     update(e){
         this.sonStatus.isAdd = e.isAdd
         this.sonStatus.dialogShow = true
-        this.$refs.vAdd.update(e.id)
+        this.$refs.vAdd.update(e.id,e.changePage)
     }
   },
 };

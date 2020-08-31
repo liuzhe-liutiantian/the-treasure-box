@@ -1,11 +1,27 @@
 <template>
   <div>
-    <el-table :data="get_SpecsList" border>
-      <el-table-column prop="id" label="规格编号" width="180"></el-table-column>
-      <el-table-column prop="specsname" label="规格名称" width="180"></el-table-column>
-      <el-table-column prop="attrs" label="规格属性" width="180">
+    <el-table :data="get_GoodsList" border>
+      <el-table-column  prop="id" label="商品编号"></el-table-column>
+      <el-table-column prop="goodsname" label="商品名称" ></el-table-column>
+      <el-table-column prop="price" label="商品价格"></el-table-column>
+      <el-table-column prop="market_price" label="市场价格" ></el-table-column>
+      <el-table-column label="图片" width="220">
         <template slot-scope="item">
-          <el-tag v-for='attr in item.row.attrs' type='info' :key='attr'>{{attr}}</el-tag>
+          <div>
+            <img class="uploadImg" :src="item.row.img? uploadHttp+item.row.img : ''" />
+          </div>
+        </template>
+      </el-table-column>
+      <el-table-column label="是否新品">
+        <template slot-scope="item">
+          <el-tag v-if="item.row.isnew ==1" type="success">是</el-tag>
+          <el-tag v-else type="danger">否</el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column label="是否热卖">
+        <template slot-scope="item">
+          <el-tag v-if="item.row.ishot ==1" type="success">是</el-tag>
+          <el-tag v-else type="danger">否</el-tag>
         </template>
       </el-table-column>
       <el-table-column prop="status" label="状态">
@@ -37,10 +53,10 @@
 import { mapGetters, mapActions } from "vuex";
 //调用接口
 import {
-  getSpecsDel,
-  getSpecsCount,
-  getSpecsAdd,
-  getSpecsEdit,
+  getGoodsDel,
+  getGoodsCount,
+  getGoodsAdd,
+  getGoodsEdit,
 } from "../../util/axios";
 export default {
   data() {
@@ -57,13 +73,13 @@ export default {
   mounted() {
     //页面一加载调取总条数
     this.getCount();
-    this.getSpecsListAction(this.pageInfo);
+    this.getGoodsListAction(this.pageInfo);
   },
   computed: {
-    ...mapGetters(["get_SpecsList"]),
+    ...mapGetters(["get_GoodsList"]),
   },
   methods: {
-    ...mapActions(["getSpecsListAction"]),
+    ...mapActions(["getGoodsListAction"]),
     //点击编辑按钮传id
     update(id) {
       this.$emit("update", {
@@ -81,7 +97,7 @@ export default {
       })
         .then(() => {
           //调取删除接口
-          getSpecsDel({ id }).then((res) => {
+          getGoodsDel({ id }).then((res) => {
             if (res.code === 200) {
               this.$message({
                 type: "success",
@@ -103,16 +119,16 @@ export default {
     },
     //获取总条数
     getCount() {
-      getSpecsCount().then((res) => {
+      getGoodsCount().then((res) => {
         if (res.code === 200) {
           this.total = res.list[0].total;
           //逻辑判断
           //首先判断数组是不是只有一条数据并且它并不是第一页，如果是 page页面--
-          if (this.pageInfo.page != 1 && this.get_SpecsList.length == 1) {
+          if (this.pageInfo.page != 1 && this.get_GoodsList.length == 1) {
             this.pageInfo.page--;
           }
           //重新调取列表
-          this.getSpecsListAction(this.pageInfo);
+          this.getGoodsListAction(this.pageInfo);
         }
       });
     },
@@ -121,21 +137,21 @@ export default {
       this.pageInfo.page = n;
       this.changePage = n;
       //重新调取列表
-      this.getSpecsListAction(this.pageInfo);
+      this.getGoodsListAction(this.pageInfo);
     },
     //上一页事件
     prevInfo(n) {
       this.pageInfo.page = n;
       this.changePage = n;
       //重新调取列表
-      this.getSpecsListAction(this.pageInfo);
+      this.getGoodsListAction(this.pageInfo);
     },
     //下一页事件
     nextInfo(n) {
       this.pageInfo.page = n;
       this.changePage = n;
       //重新调取列表
-      this.getSpecsListAction(this.pageInfo);
+      this.getGoodsListAction(this.pageInfo);
     },
   },
 };
@@ -146,4 +162,10 @@ export default {
   float: right;
   margin: 16px 0;
 }
+.uploadImg{
+  width: 200px;
+  height: 200px;
+}
 </style>
+
+

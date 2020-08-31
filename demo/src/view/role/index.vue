@@ -7,7 +7,7 @@
       <el-button @click="openDialog" type="primary" size="mini" plain>添加</el-button>
     </div>
     <!-- 列表 -->
-    <n-list @update='update'></n-list>
+    <v-list @update='update'></v-list>
     <!-- 弹出对话框 -->
     <v-add ref='vAdd' :isShow="sonStatus" @closeDialog="closeDialog"></v-add>
   </div>
@@ -15,7 +15,7 @@
 
 <script>
 import vBread from "../../components/bread";
-import nList from "./list";
+import vList from "./list";
 import vAdd from "./add";
 export default {
   data() {
@@ -45,7 +45,7 @@ export default {
   },
   components: {
     vBread,
-    nList,
+    vList,
     vAdd,
   },
 };

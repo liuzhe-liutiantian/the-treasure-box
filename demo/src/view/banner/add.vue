@@ -2,26 +2,15 @@
   <div>
     <el-dialog
       :before-close="reset"
-      :title="isShow.isAdd?'添加商品分类':'编辑商品分类'"
+      :title="isShow.isAdd?'添加轮播图':'编辑轮播图'"
       :visible.sync="isShow.dialogShow"
       center
     >
-      <el-form :model="sortForm" :rules="rules" ref="ruleForm">
-        <el-form-item prop="pid" label="上级分类：" :label-width="formLabelWidth">
-          <el-select v-model="sortForm.pid" placeholder="请选择">
-            <el-option label="顶级分类" :value="0">顶级分类</el-option>
-            <el-option
-              v-for="item in get_CateList"
-              :key="item.id"
-              :label="item.catename"
-              :value="item.id"
-            ></el-option>
-          </el-select>
+      <el-form :model="bannerForm" :rules="rules" ref="ruleForm">
+        <el-form-item prop="title" label="标题：" :label-width="formLabelWidth">
+          <el-input v-model="bannerForm.title"></el-input>
         </el-form-item>
-        <el-form-item prop="catename" label="分类名称：" :label-width="formLabelWidth">
-          <el-input v-model="sortForm.catename"></el-input>
-        </el-form-item>
-        <el-form-item v-if="sortForm.pid !=0" prop="img" label="图片" :label-width="formLabelWidth">
+        <el-form-item prop="img" label="图片" :label-width="formLabelWidth">
           <el-upload
             action="#"
             list-type="picture-card"
@@ -41,7 +30,7 @@
         </el-form-item>
         <el-form-item label="状态：" :label-width="formLabelWidth">
           <el-switch
-            v-model="sortForm.status"
+            v-model="bannerForm.status"
             active-color="#13ce66"
             inactive-color="#ff4949"
             :active-value="1"
@@ -58,9 +47,9 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
+import { mapActions } from "vuex";
 //引入接口
-import { getCateAdd, getCateInfo, getCateEdit } from "../../util/axios";
+import { getBannerAdd, getBannerInfo, getBannerEdit } from "../../util/axios";
 export default {
   data() {
     return {
@@ -70,22 +59,16 @@ export default {
       dialogVisible: false, //是否打开图片弹框
       dialogImageUrl: "", //图片地址
       editId: 0,
-      defaultChecked: [], //默认勾选的key
       formLabelWidth: "120px", //lable宽度
-      sortForm: {
-        pid: 0, //上级分类编号
-        catename: "", //商品分类名称
+      bannerForm: {
+        title: "", //轮播图名称
         img: "", //图片(文件，一般用于二级分类)
         status: 1,
       },
       rules: {
-        pid: [
+        title: [
           //代表加红色星标
-          { required: true, message: "请选择上级分类", trigger: "change" },
-        ],
-        catename: [
-          //代表加红色星标
-          { required: true, message: "请输入商品分类名称", trigger: "blur" },
+          { required: true, message: "请输入轮播图标题", trigger: "blur" },
           //验证字符数
           {
             min: 2,
@@ -98,20 +81,18 @@ export default {
     };
   },
   mounted() {
-    //获取商品分类列表
-    this.getCateListAction();
-  },
-  computed: {
-    ...mapGetters(["get_CateList"]),
+    //获取轮播图列表
+    this.getBannerListAction();
   },
   props: ["isShow"],
   methods: {
     //图片移除时候的钩子函数
     handleRemove(file, fileList) {
-      this.imgUrl = "";
+      console.log(file, fileList, "移除触发的钩子函数");
     },
     //查看图片触发的钩子函数
     handlePreview(file) {
+      console.log(file, "点击查看时候回调的钩子函数");
       this.dialogImageUrl = file.url;
       this.dialogVisible = true;
     },
@@ -125,41 +106,35 @@ export default {
     },
     //当上传文件图片发生变化的时候触发的函数
     changeInfo(file) {
+      console.log(file.raw, "文件详情");
       this.imgUrl = file.raw;
     },
     reset() {
-      this.imgUrl = "";
-      this.fileList = [];
       //清空表单信息
-      this.sortForm = {
-        pid: 0, //上级分类编号
-        catename: "", //商品分类名称
+      this.bannerForm = {
+        title: "", //轮播图名称
         img: "", //图片(文件，一般用于二级分类)
         status: 1,
       };
       //重置文件上传列表
-      // this.fileList =[]
-      //子组件去修改父组件的弹框状态
-      this.$emit("closeDialog", false);
-
+      this.fileList = [];
       //移除表单验证信息
       this.$refs["ruleForm"].clearValidate(this.rules);
+      //子组件去修改父组件的弹框状态
+      this.$emit("closeDialog", false);
     },
     //触发菜单列表的调取
-    ...mapActions(["getCateListAction"]),
+    ...mapActions(["getBannerListAction"]),
     //点击弹框获取一条数据
     update(id) {
       this.editId = id;
-      getCateInfo({ id }).then((res) => {
+      getBannerInfo({ id }).then((res) => {
         if (res.code === 200) {
-          this.sortForm = res.list;
+          this.bannerForm = res.list;
           //对图片进行二次转化
-          this.fileList = this.sortForm.img
-            ? [{ url: `${this.uploadHttp}${this.sortForm.img}` }]
+          this.fileList = this.bannerForm.img
+            ? [{ url: `${this.uploadHttp}${this.bannerForm.img}` }]
             : [];
-          if (this.imgUrl == "") {
-            this.imgUrl = this.sortForm.img;
-          }
         }
       });
     },
@@ -167,8 +142,7 @@ export default {
     add(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          //  this.sortForm.img = this.imgUrl
-          let data = this.sortForm;
+          let data = this.bannerForm;
           let file = new FormData();
           for (let i in data) {
             file.append(i, data[i]);
@@ -179,13 +153,13 @@ export default {
           //是否调取新增事件还是编辑事件
           if (this.isShow.isAdd) {
             //调取添加接口
-            getCateAdd(file).then((res) => {
+            getBannerAdd(file).then((res) => {
               if (res.code === 200) {
                 this.$message.success(res.msg);
                 //关闭弹框并清空
                 this.reset();
                 //重新调取列表
-                this.getCateListAction();
+                this.getBannerListAction();
               } else {
                 this.$message.error(res.msg);
               }
@@ -194,13 +168,13 @@ export default {
             //id编号，必填项  对数据进行编辑
             file.append("id", this.editId);
             // //调取添加接口
-            getCateEdit(file).then((res) => {
+            getBannerEdit(file).then((res) => {
               if (res.code === 200) {
                 this.$message.success(res.msg);
                 //关闭弹框并清空
                 this.reset();
                 //重新调取列表
-                this.getCateListAction();
+                this.getBannerListAction();
               } else {
                 this.$message.error(res.msg);
               }
